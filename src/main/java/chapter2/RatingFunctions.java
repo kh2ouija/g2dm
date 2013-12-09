@@ -3,28 +3,14 @@ package chapter2;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RatingFunctions {
 
-    double manhattan(Map<String, Double> ratings1, Map<String, Double> ratings2) {
-        Set<String> commonKeys = commonKeys(ratings1, ratings2);
-        double sum = 0;
-        for (String key : commonKeys) {
-            sum += Math.abs(ratings1.get(key) - ratings2.get(key));
-        }
-        return sum;
-    }
+    public static final int MANHATTAN = 1;
+    public static final int EUCLIDEAN = 2;
 
-    double euclidean(Map<String, Double> ratings1, Map<String, Double> ratings2) {
-        Set<String> commonKeys = commonKeys(ratings1, ratings2);
-        double sum = 0;
-        for (String key : commonKeys) {
-            sum += Math.pow(ratings1.get(key) - ratings2.get(key), 2);
-        }
-        return Math.sqrt(sum);
-    }
-
-    double minkowski(Map<String, Double> ratings1, Map<String, Double> ratings2, int r) {
+    static double minkowski(Map<String, Double> ratings1, Map<String, Double> ratings2, int r) {
         Set<String> commonKeys = commonKeys(ratings1, ratings2);
         double sum = 0;
         for (String key : commonKeys) {
@@ -33,13 +19,13 @@ public class RatingFunctions {
         return Math.pow(sum, 1.0/r);
     }
 
-    Set<String> commonKeys(Map<String, Double> ratings1, Map<String, Double> ratings2) {
+    private static Set<String> commonKeys(Map<String, Double> ratings1, Map<String, Double> ratings2) {
         Set<String> commonKeys = new HashSet<>(ratings1.keySet());
         commonKeys.retainAll(ratings2.keySet());
         return commonKeys;
     }
 
-    public double pearson(Map<String, Double> ratings1, Map<String, Double> ratings2) {
+    public static double pearson(Map<String, Double> ratings1, Map<String, Double> ratings2) {
         double sum_xy = 0;
         double sum_x = 0;
         double sum_y = 0;
@@ -64,5 +50,13 @@ public class RatingFunctions {
         } else {
             return up / down;
         }
+    }
+
+    public static double cosine(Map<String, Double> ratings1, Map<String, Double> ratings2) {
+        return 0;
+    }
+
+    public static double vectorLength(Map<String, Double> ratings) {
+        return Math.sqrt(ratings.values().stream().mapToDouble(r -> r * r).sum());
     }
 }

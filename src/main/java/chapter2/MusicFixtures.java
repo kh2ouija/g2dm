@@ -10,6 +10,11 @@ import java.util.Map;
  */
 public class MusicFixtures implements RatingsDataSource {
 
+    public static final String HAILEY = "Hailey";
+    public static final String VERONICA = "Veronica";
+    public static final String JORDYN = "Jordyn";
+    public static final String ANGELICA = "Angelica";
+    public static final String BILL = "Bill";
     private final Map<String,Map<String,Double>> map;
 
     public MusicFixtures() {
