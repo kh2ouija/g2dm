@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 public class RecommenderTest {
 
-    private RatingsSource ds;
+    private Dataset ds;
     private Recommender recommender;
 
     @Before
@@ -32,9 +32,8 @@ public class RecommenderTest {
 
     @Test
     public void testNearestNeighbours() throws Exception {
-        recommender = new Recommender(ds, new ManhattanStrategy());
         String[] expected = new String[]{"Veronica", "Chan", "Sam", "Dan", "Angelica", "Bill", "Jordyn"};
-        assertThat(recommender.getNearestUsers(HAILEY), contains(expected));
+        assertThat(new ManhattanStrategy().getNearestUsers(HAILEY, ds), contains(expected));
     }
 
     @Test

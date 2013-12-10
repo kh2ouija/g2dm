@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
  */
 public class SimilarityFunctionsTest {
 
-    private RatingsSource ds;
+    private Dataset ds;
 
     @Before
     public void setUp() throws Exception {

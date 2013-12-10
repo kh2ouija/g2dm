@@ -18,7 +18,7 @@ import static g2dm.RatingsOperations.cosineSimilarity;
  */
 public class RatingsOperationsTest {
 
-    private RatingsSource ds;
+    private Dataset ds;
 
     @Test
     public void testVectorLength() throws Exception {

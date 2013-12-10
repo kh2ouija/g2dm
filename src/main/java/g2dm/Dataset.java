@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by sp on 12/8/13.
  */
-public interface RatingsSource {
+public interface Dataset {
 
     Map<String, Double> getRatings(String user);
 

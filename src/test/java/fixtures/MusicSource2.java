@@ -1,6 +1,6 @@
 package fixtures;
 
-import g2dm.RatingsSource;
+import g2dm.Dataset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by sp on 12/8/13.
  */
-public class MusicSource2 implements RatingsSource {
+public class MusicSource2 implements Dataset {
 
     private final Map<String,Map<String,Double>> map;
 
