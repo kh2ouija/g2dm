@@ -28,12 +28,8 @@ public class Recommender {
 
     private Map<String, Double> getUserSimilarityMap(String user, List<String> otherUsers) {
         Map<String, Double> userScores = new HashMap<>();
-        otherUsers.forEach(other -> userScores.put(other, computeSimilarity(user, other)));
+        otherUsers.forEach(other -> userScores.put(other, similarityStrategy.computeSimilarity(ratingsSource.getRatings(user), ratingsSource.getRatings(other), this)));
         return userScores;
-    }
-
-    private double computeSimilarity(String user, String other) {
-        return similarityStrategy.getSimilarityFunction().apply(ratingsSource.getRatings(user), ratingsSource.getRatings(other));
     }
 
     public List<String> recommendItems(String user) {
