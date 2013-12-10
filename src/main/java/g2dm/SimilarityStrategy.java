@@ -12,5 +12,5 @@ public interface SimilarityStrategy {
     BiFunction<Map<String, Double>, Map<String, Double>, Double> getSimilarityFunction();
     Comparator<Double> getDistanceComparator();
 
-    double computeSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2, Recommender recommender);
+    double computeSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2);
 }

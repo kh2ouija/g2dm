@@ -1,6 +1,5 @@
 package g2dm.strategies;
 
-import g2dm.Recommender;
 import g2dm.SimilarityStrategy;
 
 import java.util.Comparator;
@@ -23,7 +22,7 @@ public class AbstractSimilarityStrategy implements SimilarityStrategy {
     }
 
     @Override
-    public double computeSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2, Recommender recommender) {
+    public double computeSimilarity(Map<String, Double> ratings1, Map<String, Double> ratings2) {
         return getSimilarityFunction().apply(ratings1, ratings2);
     }
 }
