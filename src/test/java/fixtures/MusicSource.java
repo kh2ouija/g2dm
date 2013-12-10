@@ -1,4 +1,6 @@
-package chapter2;
+package fixtures;
+
+import g2dm.RatingsSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +10,7 @@ import java.util.Map;
 /**
  * Created by sp on 12/8/13.
  */
-public class MusicFixtures implements RatingsDataSource {
+public class MusicSource implements RatingsSource {
 
     public static final String HAILEY = "Hailey";
     public static final String VERONICA = "Veronica";
@@ -17,7 +19,7 @@ public class MusicFixtures implements RatingsDataSource {
     public static final String BILL = "Bill";
     private final Map<String,Map<String,Double>> map;
 
-    public MusicFixtures() {
+    public MusicSource() {
         map = new HashMap<>();
         Map<String, Double> angelica = new HashMap<>();
         angelica.put("Blues Traveler", Double.valueOf(3.5));

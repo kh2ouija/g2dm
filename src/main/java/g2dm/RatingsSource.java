@@ -1,4 +1,4 @@
-package chapter2;
+package g2dm;
 
 import java.util.List;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by sp on 12/8/13.
  */
-public interface RatingsDataSource {
+public interface RatingsSource {
 
     Map<String, Double> getRatings(String user);
 
