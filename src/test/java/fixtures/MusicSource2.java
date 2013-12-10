@@ -17,18 +17,18 @@ public class MusicSource2 implements Dataset {
     public MusicSource2() {
         map = new HashMap<>();
         Map<String, Double> clara = new HashMap<>();
-        clara.put("Blues Traveler", Double.valueOf(4.75));
-        clara.put("Norah Jones", Double.valueOf(4.5));
-        clara.put("Phoenix", Double.valueOf(5.0));
-        clara.put("The Strokes", Double.valueOf(4.25));
-        clara.put("Weird Al", Double.valueOf(4.0));
+        clara.put("Blues Traveler", 4.75);
+        clara.put("Norah Jones", 4.5);
+        clara.put("Phoenix", 5.0);
+        clara.put("The Strokes", 4.25);
+        clara.put("Weird Al", 4.0);
         map.put("Clara", clara);
         Map<String, Double> robert = new HashMap<>();
-        robert.put("Blues Traveler", Double.valueOf(4));
-        robert.put("Norah Jones", Double.valueOf(3.0));
-        robert.put("Phoenix", Double.valueOf(5.0));
-        robert.put("The Strokes", Double.valueOf(2.0));
-        robert.put("Weird Al", Double.valueOf(1.0));
+        robert.put("Blues Traveler", (double) 4);
+        robert.put("Norah Jones", 3.0);
+        robert.put("Phoenix", 5.0);
+        robert.put("The Strokes", 2.0);
+        robert.put("Weird Al", 1.0);
         map.put("Robert", robert);
     }
 

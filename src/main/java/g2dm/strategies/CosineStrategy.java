@@ -1,7 +1,6 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
-import g2dm.SimilarityStrategy;
 import g2dm.UserScore;
 
 import java.util.Comparator;

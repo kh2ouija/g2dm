@@ -40,7 +40,7 @@ public class RecommenderTest {
     public void testRecommendMovies() throws Exception {
         recommender = new Recommender(ds, new EuclideanStrategy());
         assertThat(recommender.recommendItems(HAILEY),
-                containsInAnyOrder(new String[]{"Phoenix", "Blues Traveler", "Slightly Stoopid"}));
+                containsInAnyOrder("Phoenix", "Blues Traveler", "Slightly Stoopid"));
         assertThat(recommender.recommendItems(ANGELICA), is(empty()));
     }
 

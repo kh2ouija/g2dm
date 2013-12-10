@@ -4,7 +4,6 @@ import g2dm.Dataset;
 import g2dm.SimilarityStrategy;
 import g2dm.UserScore;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -22,26 +21,16 @@ public abstract class AbstractSimilarityStrategy implements SimilarityStrategy {
 
     @Override
     public List<String> getNearestUsers(String user, Dataset dataset) {
-        List<UserScore> userScores = computeUserSimilarities(user, dataset);
-        List<String> result = userScores.stream()
+        return computeUserSimilarities(user, dataset).stream()
                 .sorted(getUserScoreComparator())
                 .map(UserScore::getUser)
                 .collect(toList());
-        return result;
     }
 
     private List<UserScore> computeUserSimilarities(String user, Dataset dataset) {
-        List<UserScore> result = dataset.getOtherUsers(user).stream().reduce(new ArrayList<>(),
-                (list, other) -> {
-                    UserScore us = new UserScore(other, computeSimilarityScore(dataset.getRatings(user), dataset.getRatings(other)));
-                    list.add(us);
-                    return list;
-                },
-                (list1, list2) -> {
-                    list1.addAll(list2);
-                    return list1;
-                });
-        return result;
+        return dataset.getOtherUsers(user).stream()
+                .map(other -> new UserScore(other, computeSimilarityScore(dataset.getRatings(user), dataset.getRatings(other))))
+                .collect(toList());
     }
 
     private double computeSimilarityScore(Map<String, Double> ratings1, Map<String, Double> ratings2) {

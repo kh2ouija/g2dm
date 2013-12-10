@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.toSet;
 public class RatingsOperations {
 
     public static Set<String> commonItems(Map<String, Double> ratings1, Map<String, Double> ratings2) {
-        return ratings1.keySet().stream().filter(s -> ratings2.containsKey(s)).collect(toSet());
+        return ratings1.keySet().stream().filter(ratings2::containsKey).collect(toSet());
     }
 
     public static double dotProduct(Map<String, Double> ratings1, Map<String, Double> ratings2) {

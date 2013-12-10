@@ -18,11 +18,11 @@ public class Recommender {
     }
 
     public List<String> recommendItems(String user) {
-        List<String> orderedSimilarUsers = similarityStrategy.getNearestUsers(user, dataset);
-        String nearest = orderedSimilarUsers.get(0);
+        String nearest = similarityStrategy.getNearestUsers(user, dataset).get(0);
         Set<String> alreadyRated = dataset.getRatings(user).keySet();
-        return dataset.getRatings(nearest).keySet().stream()
-                .filter(item -> !alreadyRated.contains(item)).collect(toList());
+        List<String> result = new ArrayList<>(dataset.getRatings(nearest).keySet());
+        result.removeAll(alreadyRated);
+        return result;
     }
 
 }
