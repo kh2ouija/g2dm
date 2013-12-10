@@ -10,20 +10,20 @@ import static java.util.stream.Collectors.toList;
 public class Recommender {
 
     private RatingsSource ratingsSource;
-    private SimilarityFunction similarityFunction;
+    private SimilarityStrategy similarityStrategy;
 
-    public Recommender(RatingsSource ratingsSource, SimilarityFunction similarityFunction) {
+    public Recommender(RatingsSource ratingsSource, SimilarityStrategy similarityStrategy) {
         this.ratingsSource = ratingsSource;
-        this.similarityFunction = similarityFunction;
+        this.similarityStrategy = similarityStrategy;
     }
 
-    public List<String> getOrderedSimilarUsers(String user) {
-        new Recommender(null, SimilarityFunctions::pearsonCorrelation);
-        List<String> otherUsers = getOtherUsers(user);
+    public List<String> getNearestUsers(String user) {
+        List<String> otherUsers = ratingsSource.getOtherUsers(user);
         Map<String, Double> userScores = getUserSimilarityMap(user, otherUsers);
-        return otherUsers.stream().sorted(
-                (u1, u2) -> Double.compare(userScores.get(u1), userScores.get(u2))
+        List<String> result = otherUsers.stream().sorted(
+                (u1, u2) -> similarityStrategy.getDistanceComparator().compare(userScores.get(u1), userScores.get(u2))
         ).collect(toList());
+        return result;
     }
 
     private Map<String, Double> getUserSimilarityMap(String user, List<String> otherUsers) {
@@ -32,18 +32,13 @@ public class Recommender {
         return userScores;
     }
 
-    private List<String> getOtherUsers(String user) {
-        List<String> otherUsers = new ArrayList<>(ratingsSource.getUsers());
-        otherUsers.remove(user);
-        return otherUsers;
-    }
-
     private double computeSimilarity(String user, String other) {
-        return similarityFunction.apply(ratingsSource.getRatings(user), ratingsSource.getRatings(other));
+        return similarityStrategy.getSimilarityFunction().apply(ratingsSource.getRatings(user), ratingsSource.getRatings(other));
     }
 
     public List<String> recommendItems(String user) {
-        String nearest = getOrderedSimilarUsers(user).get(0);
+        List<String> orderedSimilarUsers = getNearestUsers(user);
+        String nearest = orderedSimilarUsers.get(0);
         Set<String> alreadyRated = ratingsSource.getRatings(user).keySet();
         return ratingsSource.getRatings(nearest).keySet().stream()
                 .filter(item -> !alreadyRated.contains(item)).collect(toList());

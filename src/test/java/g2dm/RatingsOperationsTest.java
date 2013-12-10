@@ -11,7 +11,7 @@ import static g2dm.RatingsOperations.vectorLength;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
-import static g2dm.SimilarityFunctions.cosineSimilarity;
+import static g2dm.RatingsOperations.cosineSimilarity;
 
 /**
  * @author sp
