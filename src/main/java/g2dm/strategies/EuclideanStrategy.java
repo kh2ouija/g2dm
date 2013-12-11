@@ -1,11 +1,8 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
-import g2dm.UserWithScore;
-import g2dm.UserWithWeight;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 

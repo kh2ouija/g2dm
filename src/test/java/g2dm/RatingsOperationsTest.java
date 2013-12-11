@@ -1,17 +1,13 @@
 package g2dm;
 
-import fixtures.MusicSource;
 import fixtures.MusicSource2;
 import org.junit.Test;
 
-import static fixtures.MusicSource.ANGELICA;
-import static fixtures.MusicSource.VERONICA;
 import static g2dm.RatingsOperations.dotProduct;
 import static g2dm.RatingsOperations.vectorLength;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
-import static g2dm.RatingsOperations.cosineSimilarity;
 
 /**
  * @author sp

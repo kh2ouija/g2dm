@@ -2,7 +2,6 @@ package g2dm.strategies;
 
 import g2dm.Dataset;
 import g2dm.SimilarityStrategy;
-import g2dm.UserWithScore;
 import g2dm.UserWithWeight;
 
 import java.util.Comparator;

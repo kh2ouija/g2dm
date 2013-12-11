@@ -1,7 +1,6 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
-import g2dm.UserWithScore;
 
 import java.util.Comparator;
 import java.util.Map;

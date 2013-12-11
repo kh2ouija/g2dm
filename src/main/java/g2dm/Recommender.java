@@ -1,6 +1,9 @@
 package g2dm;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Created by sp on 12/8/13.
@@ -17,7 +20,7 @@ public class Recommender {
         this.k = k;
     }
 
-    public List<String> recommendItems(String user) {
+    public List<ItemWithRating> recommendItems(String user) {
         List<UserWithWeight> pie = similarityStrategy.getKNearestPercentileWeightedUsers(user, dataset, k);
         if (pie.isEmpty()) {
             return Collections.emptyList();
@@ -25,9 +28,10 @@ public class Recommender {
         else {
             UserWithWeight nearest = pie.get(0);
             Set<String> alreadyRated = dataset.getRatings(user).keySet();
-            List<String> result = new ArrayList<>(dataset.getRatings(nearest.getUser()).keySet());
-            result.removeAll(alreadyRated);
-            return result;
+            return dataset.getRatings(nearest.getUser()).entrySet().stream()
+                    .filter(e -> ! alreadyRated.contains(e.getKey()))
+                    .map(e -> new ItemWithRating(e.getKey(), e.getValue()))
+                    .collect(toList());
         }
     }
 

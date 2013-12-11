@@ -2,8 +2,13 @@ package g2dm;
 
 import fixtures.MusicSource;
 import g2dm.strategies.ManhattanStrategy;
+import g2dm.strategies.PearsonStrategy;
+import g2dm.strategies.UserWithScore;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static fixtures.MusicSource.ANGELICA;
 import static fixtures.MusicSource.HAILEY;
@@ -26,25 +31,23 @@ public class RecommenderTest {
     }
 
     @Test
-    public void testNearestNeighbours() throws Exception {
-        assertThat(
-                new ManhattanStrategy().getKNearestPercentileWeightedUsers(HAILEY, ds, 7).stream()
-                        .map(UserWithWeight::getUser).collect(toList()),
-                contains("Veronica", "Chan", "Sam", "Dan", "Angelica", "Bill", "Jordyn"));
-    }
-
-    @Test
     public void testRecommendMusic() throws Exception {
         recommender = new Recommender(ds, new ManhattanStrategy(), 1);
         assertThat(
                 recommender.recommendItems(HAILEY),
-                containsInAnyOrder("Phoenix", "Blues Traveler", "Slightly Stoopid"));
+                containsInAnyOrder(
+                        new ItemWithRating("Phoenix", 4.0),
+                        new ItemWithRating("Blues Traveler", 3.0),
+                        new ItemWithRating("Slightly Stoopid", 2.5)));
         assertThat(
                 recommender.recommendItems("Chan"),
-                containsInAnyOrder("The Strokes", "Vampire Weekend"));
+                containsInAnyOrder(
+                        new ItemWithRating("The Strokes", 4.0),
+                        new ItemWithRating("Vampire Weekend", 1.0)));
         assertThat(
                 recommender.recommendItems("Sam"),
-                containsInAnyOrder("Deadmau5"));
+                containsInAnyOrder(
+                        new ItemWithRating("Deadmau5", 1.0)));
         assertThat(
                 recommender.recommendItems(ANGELICA),
                 is(empty()));
