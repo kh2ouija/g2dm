@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface SimilarityStrategy {
 
-    public List<String> getNearestUsers(String user, Dataset dataset);
+    public List<UserWithWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k);
 
 }

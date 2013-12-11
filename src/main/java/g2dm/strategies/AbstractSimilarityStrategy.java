@@ -2,7 +2,8 @@ package g2dm.strategies;
 
 import g2dm.Dataset;
 import g2dm.SimilarityStrategy;
-import g2dm.UserScore;
+import g2dm.UserWithScore;
+import g2dm.UserWithWeight;
 
 import java.util.Comparator;
 import java.util.List;
@@ -17,24 +18,32 @@ import static java.util.stream.Collectors.toList;
 public abstract class AbstractSimilarityStrategy implements SimilarityStrategy {
 
     abstract BiFunction<Map<String, Double>, Map<String, Double>, Double> getSimilarityFunction();
-    abstract Comparator<UserScore> getUserScoreComparator();
+    abstract Comparator<UserWithScore> getUserScoreComparator();
 
     @Override
-    public List<String> getNearestUsers(String user, Dataset dataset) {
-        return computeUserSimilarities(user, dataset).stream()
+    public final List<UserWithWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k) {
+        List<UserWithScore> usersWithScores = computeAllUsersScores(user, dataset).stream()
                 .sorted(getUserScoreComparator())
-                .map(UserScore::getUser)
+                .limit(k)
+                .collect(toList());
+        return computePie(usersWithScores);
+    }
+
+    protected List<UserWithWeight> computePie(List<UserWithScore> usersWithScores) {
+        double equalShare = 1.0 / usersWithScores.size();
+        return usersWithScores.stream()
+                .map(uws -> new UserWithWeight(uws.getUser(), equalShare))
                 .collect(toList());
     }
 
-    private List<UserScore> computeUserSimilarities(String user, Dataset dataset) {
+    private List<UserWithScore> computeAllUsersScores(String user, Dataset dataset) {
         return dataset.getOtherUsers(user).stream()
-                .map(other -> new UserScore(other, computeSimilarityScore(dataset.getRatings(user), dataset.getRatings(other))))
+                .map(other -> new UserWithScore(other, computeSimilarityScore(user, other, dataset)))
                 .collect(toList());
     }
 
-    private double computeSimilarityScore(Map<String, Double> ratings1, Map<String, Double> ratings2) {
-        return getSimilarityFunction().apply(ratings1, ratings2);
+    private double computeSimilarityScore(String user, String other, Dataset dataset) {
+        return getSimilarityFunction().apply(dataset.getRatings(user), dataset.getRatings(other));
     }
 
 }

@@ -1,7 +1,7 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
-import g2dm.UserScore;
+import g2dm.UserWithScore;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class CosineStrategy extends AbstractSimilarityStrategy {
     }
 
     @Override
-    public Comparator<UserScore> getUserScoreComparator() {
+    public Comparator<UserWithScore> getUserScoreComparator() {
         return (u1, u2) -> Double.compare(u2.getScore(), u1.getScore());
     }
 

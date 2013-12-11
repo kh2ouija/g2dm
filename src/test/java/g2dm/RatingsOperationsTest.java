@@ -33,10 +33,4 @@ public class RatingsOperationsTest {
         assertThat(dotProduct(ds.getRatings("Clara"), ds.getRatings("Robert")), is(closeTo(70.0, 1E-7)));
     }
 
-    @Test
-    public void testCosine() throws Exception {
-        ds = new MusicSource();
-        assertThat(cosineSimilarity(ds.getRatings(ANGELICA), ds.getRatings(VERONICA)), is(closeTo(0.9246, 1E-4)));
-    }
-
 }
