@@ -1,7 +1,8 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
-import g2dm.UserWithWeight;
+import g2dm.dto.UserAndScore;
+import g2dm.dto.UserAndWeight;
 
 import java.util.Comparator;
 import java.util.List;
@@ -21,15 +22,15 @@ public class PearsonStrategy extends AbstractSimilarityStrategy {
     }
 
     @Override
-    public Comparator<UserWithScore> getUserScoreComparator() {
+    public Comparator<UserAndScore> getUserScoreComparator() {
         return (u1, u2) -> Double.compare(u2.getScore(), u1.getScore());
     }
 
     @Override
-    protected List<UserWithWeight> computePie(List<UserWithScore> usersWithScores) {
-        double sum = usersWithScores.stream().mapToDouble(UserWithScore::getScore).sum();
+    protected List<UserAndWeight> computePie(List<UserAndScore> usersWithScores) {
+        double sum = usersWithScores.stream().mapToDouble(UserAndScore::getScore).sum();
         return usersWithScores.stream()
-                .map(uws -> new UserWithWeight(uws.getUser(), uws.getScore() / sum))
+                .map(uws -> new UserAndWeight(uws.getUser(), uws.getScore() / sum))
                 .collect(toList());
     }
 

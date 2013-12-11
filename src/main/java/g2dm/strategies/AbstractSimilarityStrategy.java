@@ -2,7 +2,8 @@ package g2dm.strategies;
 
 import g2dm.Dataset;
 import g2dm.SimilarityStrategy;
-import g2dm.UserWithWeight;
+import g2dm.dto.UserAndScore;
+import g2dm.dto.UserAndWeight;
 
 import java.util.Comparator;
 import java.util.List;
@@ -17,27 +18,27 @@ import static java.util.stream.Collectors.toList;
 public abstract class AbstractSimilarityStrategy implements SimilarityStrategy {
 
     abstract BiFunction<Map<String, Double>, Map<String, Double>, Double> getSimilarityFunction();
-    abstract Comparator<UserWithScore> getUserScoreComparator();
+    abstract Comparator<UserAndScore> getUserScoreComparator();
 
     @Override
-    public final List<UserWithWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k) {
-        List<UserWithScore> usersWithScores = computeAllUsersScores(user, dataset).stream()
+    public final List<UserAndWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k) {
+        List<UserAndScore> usersWithScores = computeAllUsersScores(user, dataset).stream()
                 .sorted(getUserScoreComparator())
                 .limit(k)
                 .collect(toList());
         return computePie(usersWithScores);
     }
 
-    protected List<UserWithWeight> computePie(List<UserWithScore> usersWithScores) {
+    protected List<UserAndWeight> computePie(List<UserAndScore> usersWithScores) {
         double equalShare = 1.0 / usersWithScores.size();
         return usersWithScores.stream()
-                .map(uws -> new UserWithWeight(uws.getUser(), equalShare))
+                .map(uws -> new UserAndWeight(uws.getUser(), equalShare))
                 .collect(toList());
     }
 
-    private List<UserWithScore> computeAllUsersScores(String user, Dataset dataset) {
+    private List<UserAndScore> computeAllUsersScores(String user, Dataset dataset) {
         return dataset.getOtherUsers(user).stream()
-                .map(other -> new UserWithScore(other, computeSimilarityScore(user, other, dataset)))
+                .map(other -> new UserAndScore(other, computeSimilarityScore(user, other, dataset)))
                 .collect(toList());
     }
 

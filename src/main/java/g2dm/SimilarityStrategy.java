@@ -1,5 +1,7 @@
 package g2dm;
 
+import g2dm.dto.UserAndWeight;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,6 @@ import java.util.List;
  */
 public interface SimilarityStrategy {
 
-    public List<UserWithWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k);
+    public List<UserAndWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k);
 
 }
