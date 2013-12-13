@@ -1,6 +1,8 @@
 package g2dm;
 
 import g2dm.dto.ItemAndRating;
+import g2dm.dto.RatingAndScore;
+import g2dm.dto.UserAndScore;
 import g2dm.dto.UserAndWeight;
 
 import java.util.*;
@@ -23,18 +25,7 @@ public class Recommender {
     }
 
     public List<ItemAndRating> recommendItems(String user) {
-        List<UserAndWeight> pie = similarityStrategy.getKNearestPercentileWeightedUsers(user, dataset, k);
-        if (pie.isEmpty()) {
-            return Collections.emptyList();
-        }
-        else {
-            UserAndWeight nearest = pie.get(0);
-            Set<String> alreadyRated = dataset.getRatings(user).keySet();
-            return dataset.getRatings(nearest.getUser()).entrySet().stream()
-                    .filter(e -> ! alreadyRated.contains(e.getKey()))
-                    .map(e -> new ItemAndRating(e.getKey(), e.getValue()))
-                    .collect(toList());
-        }
+        return similarityStrategy.recommendItems(user, dataset, k);
     }
 
 }

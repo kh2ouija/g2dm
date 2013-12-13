@@ -1,6 +1,7 @@
 package g2dm.strategies;
 
 import g2dm.RatingsOperations;
+import g2dm.dto.RatingAndScore;
 import g2dm.dto.UserAndScore;
 import g2dm.dto.UserAndWeight;
 
@@ -27,11 +28,9 @@ public class PearsonStrategy extends AbstractSimilarityStrategy {
     }
 
     @Override
-    protected List<UserAndWeight> computePie(List<UserAndScore> usersWithScores) {
-        double sum = usersWithScores.stream().mapToDouble(UserAndScore::getScore).sum();
-        return usersWithScores.stream()
-                .map(uws -> new UserAndWeight(uws.getUser(), uws.getScore() / sum))
-                .collect(toList());
+    protected double computeNormalizedRating(List<RatingAndScore> ratingAndScores) {
+        double totalDistance = ratingAndScores.stream().mapToDouble(RatingAndScore::getScore).sum();
+        return ratingAndScores.stream().mapToDouble(ras -> ras.getRating() * (ras.getScore() / totalDistance)).sum();
     }
 
 }

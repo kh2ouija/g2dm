@@ -2,12 +2,12 @@ package g2dm.strategies;
 
 import g2dm.Dataset;
 import g2dm.SimilarityStrategy;
+import g2dm.dto.ItemAndRating;
+import g2dm.dto.RatingAndScore;
 import g2dm.dto.UserAndScore;
 import g2dm.dto.UserAndWeight;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toList;
@@ -21,19 +21,17 @@ public abstract class AbstractSimilarityStrategy implements SimilarityStrategy {
     abstract Comparator<UserAndScore> getUserScoreComparator();
 
     @Override
-    public final List<UserAndWeight> getKNearestPercentileWeightedUsers(String user, Dataset dataset, int k) {
-        List<UserAndScore> usersWithScores = computeAllUsersScores(user, dataset).stream()
+    public List<ItemAndRating> recommendItems(String user, Dataset dataset, int k) {
+        List<UserAndScore> scoredUsers = computeKNearestPercentileWeightedUsers(user, dataset, k);
+        return computeNormalizedRecommendations(user, scoredUsers, dataset);
+    }
+
+    protected List<UserAndScore> computeKNearestPercentileWeightedUsers(String user, Dataset dataset, int k) {
+        List<UserAndScore> kNearestUsersWithScores = computeAllUsersScores(user, dataset).stream()
                 .sorted(getUserScoreComparator())
                 .limit(k)
                 .collect(toList());
-        return computePie(usersWithScores);
-    }
-
-    protected List<UserAndWeight> computePie(List<UserAndScore> usersWithScores) {
-        double equalShare = 1.0 / usersWithScores.size();
-        return usersWithScores.stream()
-                .map(uws -> new UserAndWeight(uws.getUser(), equalShare))
-                .collect(toList());
+        return kNearestUsersWithScores;
     }
 
     private List<UserAndScore> computeAllUsersScores(String user, Dataset dataset) {
@@ -46,4 +44,29 @@ public abstract class AbstractSimilarityStrategy implements SimilarityStrategy {
         return getSimilarityFunction().apply(dataset.getRatings(user), dataset.getRatings(other));
     }
 
+    protected List<ItemAndRating> computeNormalizedRecommendations(String user, List<UserAndScore> scoredUsers, Dataset dataset) {
+        Map<String, List<RatingAndScore>> collectedRatingsWithScore = collectUnnormalizedScoredRatings(scoredUsers, user, dataset);
+        return collectedRatingsWithScore.entrySet().stream()
+                .map(e -> new ItemAndRating(e.getKey(), computeNormalizedRating(e.getValue())))
+                .sorted((ir1, ir2) -> -Double.compare(ir1.getRating(), ir2.getRating()))
+                .collect(toList());
+    }
+
+    private Map<String, List<RatingAndScore>> collectUnnormalizedScoredRatings(List<UserAndScore> scoredUsers, String user, Dataset dataset) {
+        Map<String, Double> userRatings = dataset.getRatings(user);
+        Map<String, List<RatingAndScore>> collectedRatingsWithScore = new HashMap<>();
+        scoredUsers.stream().forEach(uas ->
+                dataset.getRatings(uas.getUser()).forEach((item, rating) -> {
+                    if (!userRatings.keySet().contains(item)) {
+                        List<RatingAndScore> scoredRatings = collectedRatingsWithScore.getOrDefault(item, new ArrayList<>());
+                        scoredRatings.add(new RatingAndScore(rating, uas.getScore()));
+                        collectedRatingsWithScore.put(item, scoredRatings);
+                    }
+                }));
+        return collectedRatingsWithScore;
+    }
+
+    protected double computeNormalizedRating(List<RatingAndScore> ratingsAndScores) {
+        return ratingsAndScores.stream().mapToDouble(RatingAndScore::getRating).sum() / ratingsAndScores.size();
+    }
 }

@@ -4,8 +4,8 @@ import g2dm.Dataset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by sp on 12/8/13.
@@ -38,7 +38,7 @@ public class MusicSource2 implements Dataset {
     }
 
     @Override
-    public List<String> getUsers() {
-        return new ArrayList<>(map.keySet());
+    public Set<String> getUsers() {
+        return map.keySet();
     }
 }

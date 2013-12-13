@@ -5,9 +5,7 @@ import g2dm.Dataset;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sp on 12/10/13.
@@ -17,10 +15,10 @@ public class BXDumpDataset implements Dataset {
     private static final String USERS_FILE = "BX-Users.csv";
     private static final String BOOKS_FILE = "BX-Books.csv";
     private static final String RATINGS_FILE = "BX-Book-Ratings.csv";
-    private List<String> users;
+    private Set<String> users;
 
     void load(String path) throws IOException {
-        users = new ArrayList<>();
+        users = new HashSet<>();
         Files.lines(Paths.get(path, USERS_FILE)).forEach(line -> {
             users.add(line.split(";")[0].split("\"")[1]);
         });
@@ -32,7 +30,7 @@ public class BXDumpDataset implements Dataset {
     }
 
     @Override
-    public List<String> getUsers() {
+    public Set<String> getUsers() {
         return users;
     }
 
