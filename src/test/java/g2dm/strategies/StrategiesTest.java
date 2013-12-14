@@ -4,9 +4,7 @@ import fixtures.MusicSource;
 import fixtures.PieSource;
 import g2dm.Dataset;
 import g2dm.dto.ItemAndRating;
-import g2dm.dto.RatingAndScore;
 import g2dm.dto.UserAndScore;
-import g2dm.dto.UserAndWeight;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 import static fixtures.MusicSource.HAILEY;
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 

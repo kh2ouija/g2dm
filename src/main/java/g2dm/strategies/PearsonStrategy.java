@@ -3,14 +3,11 @@ package g2dm.strategies;
 import g2dm.RatingsOperations;
 import g2dm.dto.RatingAndScore;
 import g2dm.dto.UserAndScore;
-import g2dm.dto.UserAndWeight;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * @author sp

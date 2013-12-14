@@ -5,7 +5,6 @@ import g2dm.SimilarityStrategy;
 import g2dm.dto.ItemAndRating;
 import g2dm.dto.RatingAndScore;
 import g2dm.dto.UserAndScore;
-import g2dm.dto.UserAndWeight;
 
 import java.util.*;
 import java.util.function.BiFunction;

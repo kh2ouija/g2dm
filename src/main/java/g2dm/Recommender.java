@@ -1,13 +1,8 @@
 package g2dm;
 
 import g2dm.dto.ItemAndRating;
-import g2dm.dto.RatingAndScore;
-import g2dm.dto.UserAndScore;
-import g2dm.dto.UserAndWeight;
 
-import java.util.*;
-
-import static java.util.stream.Collectors.*;
+import java.util.List;
 
 /**
  * Created by sp on 12/8/13.
